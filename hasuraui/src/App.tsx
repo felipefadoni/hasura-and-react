@@ -1,36 +1,42 @@
-import { gql, useSubscription } from "@apollo/client";
+import { useEffect, useState } from "react";
+import { io } from "socket.io-client";
 import "./App.css";
 
+type User = {
+  id: string;
+  name: string;
+  email: string;
+};
+
+const socket = io("http://localhost:3000", {
+  reconnectionDelayMax: 10000,
+  transports: ["websocket"],
+});
+
 function App() {
-  const { loading, error, data } = useSubscription(
-    gql`
-      subscription {
-        user(order_by: { name: asc }) {
-          id
-          name
-          email
-        }
-      }
-    `
-  );
+  const [users, setUsers] = useState<User[]>([]);
 
-  if (loading) {
-    return <span>Loading...</span>;
-  }
-
-  if (error) {
-    console.error(error);
-    return <span>Error!</span>;
-  }
+  useEffect((): any => {
+    const getUsers = (message: any) => {
+      setUsers(message.user as User[]);
+    };
+    socket.on("users", getUsers);
+    return () => socket.off("users", getUsers);
+  }, []);
 
   return (
     <div className="App">
       <div className="card">
-        {data.user.map((user: any) => (
-          <div key={user.id}>
-            {user.name} - {user.email}
-          </div>
-        ))}
+        <div className="card-body">
+          <h5 className="card-title">Users</h5>
+          <ul className="list-group">
+            {users.map((user) => (
+              <li className="list-group-item" key={user.id}>
+                {user.name} - {user.email}
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </div>
   );
