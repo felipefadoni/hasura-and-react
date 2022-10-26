@@ -1,7 +1,10 @@
+import { Outlet } from "react-router-dom";
+import { LoginContextProvider } from "./context/provider";
+
 export default function Login() {
   return (
-    <div>
-      <h2>Page de login</h2>
-    </div>
+    <LoginContextProvider>
+      <Outlet />
+    </LoginContextProvider>
   );
 }
