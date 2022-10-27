@@ -6,11 +6,38 @@ import { env, logger } from "./config";
 
 import http from "http";
 import { app } from "./infra/http";
+import { postgresRead, postgresWrite } from "./infra/postgres";
 import configSocketIo from "./infra/socket-io/socket";
 
 enum ExitStatus {
   Success = 0,
   Error = 1,
+}
+
+try {
+  postgresRead.connect({
+    database: env.dbReadDatabase,
+    host: env.dbReadHost,
+    password: env.dbReadPassword,
+    poolMax: env.dbReadPoolMax,
+    poolMin: env.dbReadPoolMin,
+    port: env.dbReadPort,
+    user: env.dbReadUser,
+    clientType: env.dbReadClient,
+  });
+  postgresWrite.connect({
+    database: env.dbWriteDatabase,
+    host: env.dbWriteHost,
+    password: env.dbWritePassword,
+    poolMax: env.dbWritePoolMax,
+    poolMin: env.dbWritePoolMin,
+    port: env.dbWritePort,
+    user: env.dbWriteUser,
+    clientType: env.dbWriteClient,
+  });
+  logger.info("DATABASE CONNECTED");
+} catch (error: any) {
+  logger.error("ERROR CONNECT DATABASE:", error.message);
 }
 
 const server = http.createServer(app);

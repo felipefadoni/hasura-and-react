@@ -11,7 +11,7 @@ export const LoginContainer = styled.div`
 `;
 
 export const LoginBox = styled.div`
-  width: 300px;
+  width: 400px;
   padding: 1rem;
   min-height: 100px;
 `;

@@ -1,31 +1,45 @@
+import compression from "compression";
 import cors from "cors";
 import express from "express";
-import gql from "graphql-tag";
-import { apolloClient } from "../hasura";
+import helmet from "helmet";
+import morgan from "morgan";
+
+import morganConfig from "@/config/morgan";
+
+import userRouter from "./user/routes";
 
 const app = express();
 
-app.use(cors());
+app.enable("trust proxy");
+
+app
+  .use(morgan(morganConfig.format, morganConfig.options))
+  .use(compression({ level: 9 }))
+  .use(
+    helmet({
+      crossOriginResourcePolicy: false,
+    })
+  )
+  .use(
+    helmet.hsts({
+      maxAge: 31536000,
+      includeSubDomains: false,
+      preload: true,
+    })
+  )
+  .use(helmet.frameguard({ action: "sameorigin" }))
+  .use(helmet.hidePoweredBy())
+  .use(helmet.xssFilter())
+  .use(helmet.permittedCrossDomainPolicies({ permittedPolicies: "all" }))
+  .use(express.urlencoded({ extended: true }))
+  .use(express.json())
+  .use(cors());
 
 app.get("/", async (_req, res) => {
-  const getUsers = await apolloClient.query({
-    query: gql`
-      query getUsers($id: uuid!) {
-        user(where: { id: { _eq: $id } }) {
-          id
-          name
-          email
-        }
-      }
-    `,
-    variables: {
-      id: "db291d57-95b1-43b1-9924-47cdf36b2c64",
-    },
-  });
-
   const date = new Date().toUTCString();
-
-  res.json({ message: "Server started!", date, user: getUsers.data.user });
+  res.json({ message: "Server started!", date });
 });
+
+app.use("/user", userRouter);
 
 export { app };

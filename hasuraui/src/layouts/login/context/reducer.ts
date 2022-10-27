@@ -10,8 +10,9 @@ export type AppLoginReducerAction = {
     | "NEW_USER_SET_FIRST_NAME"
     | "NEW_USER_SET_LAST_NAME"
     | "NEW_USER_SET_EMAIL"
-    | "NEW_USER_SET_PASSWORD";
-  payload: InitialSateProps | any;
+    | "NEW_USER_SET_PASSWORD"
+    | "RESET_NEW_USER";
+  payload?: InitialSateProps | any;
 };
 
 export enum AppLoginReducerActionTypes {
@@ -23,6 +24,7 @@ export enum AppLoginReducerActionTypes {
   SET_PASSWORD = "SET_PASSWORD",
   SET_LOADING = "SET_LOADING",
   SET_ERROR = "SET_ERROR",
+  RESET_NEW_USER = "RESET_NEW_USER",
 }
 
 export const appLoginReducer = (
@@ -51,6 +53,7 @@ export const appLoginReducer = (
       ...state,
       newUser: { ...state.newUser, password: action.payload },
     }),
+    RESET_NEW_USER: () => ({ ...state, newUser: INITIAL_STATE.newUser }),
   };
 
   return actionsType[action.type] ? actionsType[action.type]() : state;

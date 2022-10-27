@@ -21,4 +21,5 @@ export const LoginContext = createContext({
   handleChangeLogin: (value: string, type: AppLoginReducerActionTypes) => {},
   handleChangeNewUser: (value: string, type: AppLoginReducerActionTypes) => {},
   handleSubmit: (e: FormEvent<HTMLFormElement> | undefined) => {},
+  handleSubmitLogin: (e: FormEvent<HTMLFormElement> | undefined) => {},
 });

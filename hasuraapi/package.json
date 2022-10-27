@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "ts-node-dev --respawn --transpile-only src/server.ts"
+    "dev": "ts-node-dev --inspect=0.0.0.0:9229 --watch --respawn --transpile-only --ignore-watch node_modules -r tsconfig-paths/register src/server.ts"
   },
   "keywords": [],
   "author": "",
@@ -18,6 +18,7 @@
     "apollo-link-ws": "^1.0.20",
     "bunyan": "^1.8.15",
     "bunyan-format": "^0.2.1",
+    "compression": "^1.7.4",
     "cors": "^2.8.5",
     "cross-fetch": "^3.1.5",
     "dotenv": "^16.0.3",
@@ -25,7 +26,12 @@
     "express-async-errors": "^3.1.1",
     "graphql": "^16.6.0",
     "graphql-tag": "^2.12.6",
+    "helmet": "^6.0.0",
+    "jsonwebtoken": "^8.5.1",
+    "knex": "^2.3.0",
     "module-alias": "^2.2.2",
+    "morgan": "^1.10.0",
+    "pg": "^8.8.0",
     "socket.io": "^4.5.3",
     "subscriptions-transport-ws": "^0.11.0",
     "ws": "^8.9.0"
@@ -33,12 +39,19 @@
   "devDependencies": {
     "@types/bunyan": "^1.8.8",
     "@types/bunyan-format": "^0.2.5",
+    "@types/compression": "^1.7.2",
     "@types/express": "^4.17.14",
+    "@types/jsonwebtoken": "^8.5.9",
     "@types/module-alias": "^2.0.1",
+    "@types/morgan": "^1.9.3",
     "@types/ws": "^8.5.3",
     "eslint": "^8.26.0",
     "prettier": "^2.7.1",
     "ts-node-dev": "^2.0.0",
+    "tsconfig-paths": "^4.1.0",
     "typescript": "^4.8.4"
+  },
+  "engines": {
+    "node": "14.18.x"
   }
 }

@@ -1,3 +1,5 @@
+import createUserRepository from "./create-user";
 import getAllUserRepository from "./get-all-user";
+import getUserRepository from "./get-user";
 
-export { getAllUserRepository };
+export { createUserRepository, getAllUserRepository, getUserRepository };
